@@ -1,0 +1,7 @@
+.vscode/
+obj/
+
+tun
+pyproject.toml
+*.pcap
+*.log

@@ -2,16 +2,22 @@ CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -O3
 
 TARGET = tun
-SRCS = src/tun.cpp
-OBJS = $(SRCS:.cpp=.o)
+SRCDIR = src
+OBJDIR = obj
+OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+$(TARGET): $(OBJDIR) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
 
-%.o: %.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -fr $(OBJDIR) $(TARGET)
+
+.PHONY: clean all
